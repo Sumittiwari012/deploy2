@@ -117,6 +117,17 @@
     .card a:hover {
       text-decoration: underline;
     }
+    .upcoming-meetings-section h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.meeting-card p {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  margin-bottom: 5px;
+}
   </style>
 </head>
 <body>
@@ -167,6 +178,26 @@
       </div>
     </div>
   </div>
+  <div class="upcoming-meetings-section" style="margin-top: 60px;">
+      <h2 style="margin-bottom: 20px;">Upcoming Sessions</h2>
+
+      <% if (user.bookings.length === 0) { %>
+        <p>No upcoming sessions.</p>
+      <% } else { %>
+        <div class="meeting-list">
+          <% user.bookings.forEach(function(booking) { %>
+            <div class="meeting-card" style="background: rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 10px; margin-bottom: 15px;">
+              <p style="margin: 0;"><strong>Therapist:</strong> <%= booking.prof_name || 'N/A' %></p>
+              <p style="margin: 0;"><strong>Date:</strong> <%= booking.date.toDateString() %></p>
+              <p style="margin: 0;"><strong>Time:</strong> <%= booking.time %></p>
+              <p style="margin: 0;"><strong>Mode:</strong> <%= booking.mode %></p>
+              <p style="margin: 0;"><strong>Type:</strong> <%= booking.consult_type %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
 
 </body>
 </html>

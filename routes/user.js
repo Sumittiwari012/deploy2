@@ -5,6 +5,7 @@ const PersonalInfo = require('../models/personal');
 const HealthPreference = require('../models/healthpref');
 const ContactInfo = require('../models/contactinfo'); // use correct models
 const AccountInfo = require('../models/accountinfo'); // use correct models
+const booking = require('../models/booking');
 
 const app = express();
 app.use(express.json());
@@ -60,11 +61,14 @@ router.get('/userpage', async (req, res) => {
       Contact: [],
       Account: []
     };
+    const bookings = await booking.find({ client_username: username }).sort({ date: 1, time: 1 });
+    console.log(bookings);
   res.render('userpage', {
     user: {
       fullName: personal.fullName,
       username: personal.username,
-      hasPassword: !!account.password, // true if password exists
+      hasPassword: !!account.password, 
+      bookings: bookings,
       emailVerified: contact.emailVerified
     }
   });

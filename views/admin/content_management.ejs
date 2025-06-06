@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management | Mental Health App</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h2>Content Management</h2>
+
+        <form id="contentForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" placeholder="Resource Title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" placeholder="Resource Description" required></textarea>
+
+            <button type="submit">Add Resource</button>
+        </form>
+
+        <div class="resource-list">
+            <h3>Existing Resources</h3>
+            <ul>
+                <li>Understanding Anxiety <button onclick="deleteResource()">Delete</button></li>
+                <li>Mindfulness Practices <button onclick="deleteResource()">Delete</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Therapy & Psychiatry Services</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    h2 {
+      color: #4e73df;
+      font-weight: bold;
+    }
+    .sidebar {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      height: 100%;
+    }
+    .profile-card {
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: #ffffff;
+      transition: 0.3s;
+    }
+    .profile-card:hover {
+      transform: scale(1.02);
+    }
+    .card-header {
+      background-color: #4e73df;
+      color: white;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .availability {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    .modal-header {
+      background-color: #4e73df;
+      color: white;
+    }
+    .btn-primary {
+      background-color: #4e73df;
+      border-color: #4e73df;
+    }
+    .btn-primary:hover {
+      background-color: #3a5fca;
+      border-color: #3a5fca;
+    }
+    .btn-success {
+      background-color: #1cc88a;
+      border-color: #1cc88a;
+    }
+    .btn-success:hover {
+      background-color: #17a673;
+      border-color: #17a673;
+    }
+    .btn-secondary {
+      background-color: #858796;
+      border-color: #858796;
+    }
+    .btn-secondary:hover {
+      background-color: #6c6e78;
+      border-color: #6c6e78;
+    }
+  </style>
+</head>
+<div class="container-fluid py-4">
+    <h2 class="text-center mb-4">Find a Therapist</h2>
+
+    <div class="row">
+      <!-- Sidebar Filters -->
+      <div class="col-md-3 mb-4">
+        <div class="sidebar">
+          <h5 class="mb-3">Filters</h5>
+
+          <div class="mb-3">
+            <label class="form-label">Specialization</label>
+            <select class="form-select" id="specialization">
+              <option selected>ALL</option>
+              <option>Anxiety</option>
+              <option>Depression</option>
+              <option>Relationship Issues</option>
+              <option>Stress Management</option>
+              <option>Child Therapy</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Language</label>
+            <select class="form-select" id="language">
+              <option selected>ALL</option>
+              <option>English</option>
+              <option>Hindi</option>
+              <option>Bengali</option>
+              <option>Tamil</option>
+              <option>Telugu</option>
+              <option>Marathi</option>
+              <option>Gujarati</option>
+              <option>Kannada</option>
+              <option>Malayalam</option>
+              <option>Punjabi</option>
+              <option>Urdu</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Consultation Mode</label>
+            <select class="form-select" id="consultationMode">
+              <option selected>ALL</option>
+              <option>Virtual</option>
+              <option>In-Person</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="locationOptions" style="display: none;">
+            <label class="form-label">Location Preference</label>
+            <input type="text" class="form-control mb-2" id="manualAddress" placeholder="Enter your address here" />
+            <div class="text-center">
+              <button type="button" class="btn btn-outline-success" id="loc">Use Current Location</button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" id="appointmentDate"/>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Consultation Type</label>
+            <select class="form-select" id="consultationType">
+              <option selected disabled>ALL</option>
+              <option>1:1 Therapy</option>
+              <option>Couples Therapy</option>
+              <option>Family Therapy</option>
+              <option>Group Therapy</option>
+              <option>Psychiatric Consultation</option>
+              <option>Child/Adolescent Counseling</option>
+              <option>Career Counseling</option>
+              <option>Online Chat-based Counseling</option>
+              <option>Phone Call Session</option>
+              <option>Emergency Counseling</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Therapist Cards -->
+      <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="therapistCards">
+          <!-- Cards will be injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic modals will be injected here -->
+  <div id="modalContainer"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/therapy.js"></script>
+  
+</body>
+</html>

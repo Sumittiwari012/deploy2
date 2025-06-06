@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | Mental Health App</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h2>User Management</h2>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#001</td>
+                    <td>John Doe</td>
+                    <td>john.doe@example.com</td>
+                    <td>User</td>
+                    <td>Active</td>
+                    <td>
+                        <button onclick="blockUser()">Block</button>
+                        <button onclick="deleteUser()">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#002</td>
+                    <td>Emma Watson</td>
+                    <td>emma.watson@example.com</td>
+                    <td>Therapist</td>
+                    <td>Active</td>
+                    <td>
+                        <button onclick="blockUser()">Block</button>
+                        <button onclick="deleteUser()">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Mental Health App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #d3ffe8, #e3f2fd);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .form-container h2 {
+      margin-bottom: 25px;
+      color: #2e7d32;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+      outline: none;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    }
+
+    button[type="submit"],
+    .options button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4caf50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button[type="submit"]:hover,
+    .options button:hover {
+      background-color: #388e3c;
+    }
+
+    .options {
+      margin-top: 20px;
+    }
+
+    .options button {
+      background-color: #1976d2;
+    }
+
+    .options button#forgot-password {
+      background-color: #ffb300;
+      margin-top: 10px;
+    }
+
+    .options button#forgot-password:hover {
+      background-color: #f57f17;
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    p a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2 id="form-title">Login</h2>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" method="POST" action="/login">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- FORGOT PASSWORD FORM (initially hidden) -->
+    <form id="forgotForm" method="POST" action="/verify-user" style="display: none;">
+      <input type="text" name="username" placeholder="Enter your username" required />
+      <input type="email" name="email" placeholder="Enter your email" required />
+      <button type="submit">Verify</button>
+    </form>
+
+    <div class="options">
+      <a href="/auth/google/login">Login with Google</a>
+      <button type="button" id="forgot-password">Forgot password</button>
+    </div>
+
+    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+  </div>
+
+  <script>
+    // Show Forgot Password Form
+    document.getElementById('forgot-password').addEventListener('click', () => {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('forgotForm').style.display = 'block';
+      document.getElementById('form-title').textContent = 'Reset Password';
+    });
+
+    // Handle verify-user form submission
+    document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = {
+        username: formData.get('username'),
+        email: formData.get('email')
+      };
+
+      const response = await fetch('/verify-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.status === 200) {
+        window.location.href = '/set-password';
+      } else {
+        alert('Username or email not found!');
+      }
+    });
+  </script>
+</body>
+</html>

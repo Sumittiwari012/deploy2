@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .navbar .logout-btn {
+      background: #ff6b6b;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 40px;
+    }
+
+    .welcome-section {
+      margin-bottom: 30px;
+    }
+
+    .welcome-section h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .username {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #a8d0e6;
+    }
+
+    .important-warning {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 5px solid #ffd166;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+
+    .important-warning p {
+      margin: 0;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .important-warning a {
+      color: #ffd166;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #ffd166;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h2>Mental Health Dashboard</h2>
+    <form action="/logout" method="POST">
+      <button class="logout-btn" type="submit">Log Out</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="welcome-section">
+      <h1>Welcome, <%= user.fullName %>!</h1>
+      <p class="username">@<%= user.username %></p>
+      <a href="/edit">Edit Profile</a> |
+      <a href="/change">Change Email</a>
+      <% if (!user.emailVerified) { %>
+        <div class="important-warning">
+          <p>You haven't been verified yet. <a href="/verify">Click here verify.</a></p>
+        </div>
+      <% } %>
+
+      <% if (!user.hasPassword) { %>
+        <div class="important-warning">
+          <p>You haven't set a password yet. <a href="/set-password">Click here to create one.</a></p>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Therapy Services</h3>
+        <p>Search for therapists and book sessions for virtual or in-person consultations.</p>
+        <a href="/therapy">Browse Professionals</a>
+      </div>
+
+      <div class="card">
+        <h3>Self-Care Resources</h3>
+        <p>Explore articles, videos, and tools for managing stress, anxiety, and well-being.</p>
+        <a href="/self-care">Explore Resources</a>
+      </div>
+
+      <div class="card">
+        <h3>Community Support</h3>
+        <p>Join topic-based chat groups and support forums to connect with peers anonymously.</p>
+        <a href="/community">Join the Conversation</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

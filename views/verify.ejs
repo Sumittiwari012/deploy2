@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Contact Info</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      padding: 40px;
+      color: white;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .verified {
+      color: #00e676;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .inline-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .otp-input {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .send-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .send-btn:hover {
+      background-color: #43a047;
+    }
+
+    .submit-btn {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .submit-btn:hover {
+      background-color: #1976d2;
+    }
+
+    .back-btn {
+      display: block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background-color: #6c757d;
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .error {
+      color: #ff5252;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Verify Your Contact Information</h2>
+
+    <!-- Email Section -->
+    <div class="section">
+      <div class="label">Email: <%= user.email %>
+        <% if (user.emailVerified) { %>
+          <span class="verified">Verified</span>
+        <% } %>
+      </div>
+
+      <% if (!user.emailVerified) { %>
+        <form class="inline-form" method="POST" action="/verify/send-email-otp">
+          <button class="btn send-btn" type="submit">Send OTP</button>
+        </form>
+
+        <form class="inline-form" method="POST" action="/verify/confirm-email-otp">
+          <input type="text" name="emailOTP" placeholder="Enter Email OTP" required class="otp-input" />
+          <button class="btn submit-btn" type="submit">Submit</button>
+        </form>
+      <% } %>
+    </div>
+
+    
+    
+    <a href="/userpage" class="back-btn">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

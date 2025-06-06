@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Wellness Dashboard | Mental Health App</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Corporate Wellness Dashboard</h2>
+
+        <div class="dashboard-sections">
+            <div class="dashboard-card">
+                <h3>Employee Subscriptions</h3>
+                <p>Total Employees: 150</p>
+                <p>Active Subscriptions: 120</p>
+                <button>Manage Subscriptions</button>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Usage Reports</h3>
+                <p>Monthly Sessions: 45</p>
+                <p>Average Attendance: 80%</p>
+                <button>View Reports</button>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Workshops & Webinars</h3>
+                <p>Upcoming: 3</p>
+                <p>Past: 12</p>
+                <button>Schedule Event</button>
+            </div>
+        </div>
+
+        <div class="bulk-booking">
+            <h3>Bulk Booking for Employees</h3>
+            <form id="bulkBookingForm">
+                <label for="employeeCount">Number of Employees:</label>
+                <input type="number" id="employeeCount" placeholder="e.g., 20" required>
+                
+                <label for="sessionDate">Session Date:</label>
+                <input type="date" id="sessionDate" required>
+                
+                <button type="submit">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/corporate.js"></script>
+</body>
+</html>

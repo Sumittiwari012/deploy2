@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f8fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      padding-top: 60px;
+    }
+    .btn-toggle {
+      width: 250px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 10px;
+    }
+    .card {
+      margin-top: 30px;
+      border-radius: 1rem;
+    }
+    .table thead {
+      background-color: #007bff;
+      color: white;
+    }
+    .hidden {
+      display: none;
+    }
+    .approve-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container text-center">
+  <h2 class="mb-4">Admin Panel</h2>
+
+  <div class="d-flex justify-content-center flex-wrap">
+    <button class="btn btn-success btn-toggle" onclick="showSection('approved')">View Approved Professionals</button>
+    <button class="btn btn-danger btn-toggle" onclick="showSection('unapproved')">View Unapproved Professionals</button>
+  </div>
+
+  <!-- Approved Table -->
+  <div id="approved-section" class="card hidden">
+    <div class="card-body">
+      <h4 class="card-title">Approved Professionals</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Specialization</th>
+            </tr>
+          </thead>
+          <tbody id="approved-list">
+            <% approved.forEach(p => { %>
+              <tr>
+                <td><%= p.name %></td>
+                <td><%= p.email %></td>
+                <td><%= p.specialization %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unapproved Table -->
+  <div id="unapproved-section" class="card hidden">
+    <div class="card-body">
+      <h4 class="card-title">Unapproved Professionals</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Specialization</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="unapproved-list">
+            <% unapproved.forEach(p => { %>
+              <tr>
+                <td><%= p.name %></td>
+                <td><%= p.email %></td>
+                <td><%= p.specialization %></td>
+                <td class="approve-section">
+                  <button class="btn btn-sm btn-info mb-2" onclick="openProfileModal(
+                    '<%= p.name %>',
+                    '<%= p.email %>',
+                    '<%= p.specialization %>',
+                    '<%= p.edu %>',
+                    '<%= p.certification %>'
+                  )">View Profile</button>
+
+                  <form action="/admin/<%= p._id %>" method="POST">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="approve_<%= p._id %>" onchange="this.form.submit()">
+                      <label class="form-check-label" for="approve_<%= p._id %>">Approve this professional</label>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="profileModalLabel">Professional Profile</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-start px-4 py-3">
+        <p><strong>Name:</strong> <span id="modalName"></span></p>
+        <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+        <p><strong>Specialization:</strong> <span id="modalSpec"></span></p>
+        <p><strong>Education:</strong> <span id="modalEdu"></span></p>
+        <p><strong>Certifications:</strong> <span id="modalCert"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showSection(type) {
+    document.getElementById('approved-section').classList.add('hidden');
+    document.getElementById('unapproved-section').classList.add('hidden');
+
+    if (type === 'approved') {
+      document.getElementById('approved-section').classList.remove('hidden');
+    } else {
+      document.getElementById('unapproved-section').classList.remove('hidden');
+    }
+  }
+
+  function openProfileModal(name, email, spec, edu, cert) {
+    document.getElementById('modalName').innerText = name;
+    document.getElementById('modalEmail').innerText = email;
+    document.getElementById('modalSpec').innerText = spec;
+    document.getElementById('modalEdu').innerText = edu;
+    document.getElementById('modalCert').innerText = cert;
+    const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+    modal.show();
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -8,6 +8,10 @@ let longitude = null;
 
 function createTherapistModal(t, index, selectedDate) {
   const id = `therapistModal-${index}`;
+  const timeOptions = t.timeSlots?.length
+    ? t.timeSlots.map(slot => `<option>${slot}</option>`).join('')
+    : '<option disabled>No Slots Available</option>';
+
   return `
     <div class="modal fade" id="${id}" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -38,16 +42,14 @@ function createTherapistModal(t, index, selectedDate) {
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">${consultationModeSelect.value || 'N/A'}</label>
+                  <label class="form-label">Date</label>
                   <input type="date" class="form-control" disabled value="${selectedDate || ''}" />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Time Slot</label>
                   <select class="form-select time-slot" required>
                     <option selected disabled>Select Time</option>
-                    <option>10:00 AM</option>
-                    <option>2:00 PM</option>
-                    <option>4:00 PM</option>
+                    ${timeOptions}
                   </select>
                 </div>
               </div>
@@ -62,6 +64,7 @@ function createTherapistModal(t, index, selectedDate) {
     </div>
   `;
 }
+
 
 function createTherapistCard(t, index) {
   const id = `therapistModal-${index}`;

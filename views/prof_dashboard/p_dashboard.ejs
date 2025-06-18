@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Therapist Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f5f9;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: #4a90e2;
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .header-left {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-right i {
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .logout {
+      background: white;
+      color: #4a90e2;
+      padding: 6px 14px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #incompleteNotice {
+      display: none;
+      background: #fde047;
+      color: #92400e;
+      text-align: center;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    #incompleteNotice a {
+      color: #b91c1c;
+      text-decoration: underline;
+    }
+
+    .dashboard {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    .profile-details {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 280px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .profile-details h3 {
+      margin-top: 0;
+      color: #4a90e2;
+      font-size: 1.1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 250px);
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .card.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .edit-form {
+      width: 60%;
+      margin: 1rem auto;
+      background: white;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .edit-form h3 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .edit-form label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+
+    .edit-form input,
+    .edit-form select {
+      width: 100%;
+      padding: 0.4rem;
+      margin-bottom: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+
+    .edit-form button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      display: block;
+      margin: 0.5rem auto 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left" id="therapist-name">
+      <%= username %>
+    </div>
+    <div class="header-right">
+      <i class="fas fa-bell"></i>
+      <a href="/logout" class="logout">Logout</a>
+    </div>
+  </div>
+
+  <% if (!isProfileComplete) { %>
+    <div id="incompleteNotice" style="display: block;">
+      ⚠️ Your profile is incomplete. Please <a href="/profile_comp">complete your profile</a> to unlock all dashboard options.
+    </div>
+  <% } %>
+
+  <div class="dashboard">
+    <!-- Therapist Profile Info (Left) -->
+    <div class="profile-details">
+      <h3>Your Profile</h3>
+      <p><strong>Name:</strong> <%= username %></p>
+      <p><strong>Education:</strong> <%= professional.edu %></p>
+      <p><strong>Experience:</strong> <%= professional.exp %> yrs</p>
+      <p><strong>Specialization:</strong> <%= professional.specialization %></p>
+      <p><strong>Certifications:</strong> <%= professional.certification.join(', ') %></p>
+      <p><strong>Languages:</strong> <%= professional.lang.join(', ') %></p>
+      <p><strong>Mode:</strong> <%= professional.mode.join(', ') %></p>
+      <p><strong>Fee:</strong> ₹<%= professional.price %></p>
+      <p><strong>Contact:</strong> <%= professional.email %> / <%= professional.pno %></p>
+    </div>
+
+    <!-- Dashboard Options (Right) -->
+    <div class="cards">
+      <div class="card dashboard-option <%= !isProfileComplete ? 'disabled' : '' %>" onclick="location.href='/approve-meetings'">
+        Approve Meetings
+      </div>
+      <div class="card dashboard-option <%= !isProfileComplete ? 'disabled' : '' %>" onclick="location.href='/scheduled-meetings'">
+        Check Scheduled
+      </div>
+      <div class="card dashboard-option <%= !isProfileComplete ? 'disabled' : '' %>" onclick="location.href='/edit=pricing'">
+        Edit Pricing/Date/Time
+      </div>
+      <div class="card dashboard-option <%= !isProfileComplete ? 'disabled' : '' %>" onclick="location.href='/reschedule-requests'">
+        Ask for Rescheduling
+      </div>
+      <div class="card dashboard-option <%= !isProfileComplete ? 'disabled' : '' %>" onclick="location.href='/update'">
+        Update Degree / Specialization / Certification
+      </div>
+    </div>
+  </div>
+
+  <div class="edit-form" id="editForm">
+    <h3>Edit Availability</h3>
+    <label for="date">Date</label>
+    <input type="date" id="date" name="date" />
+
+    <label for="day">Day</label>
+    <select id="day" name="day">
+      <option value="">--Select--</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+      <option>Sunday</option>
+    </select>
+
+    <label for="time">Time Slot</label>
+    <select id="time" name="time"></select>
+
+    <label for="price">Pricing (₹)</label>
+    <input type="number" id="price" name="price" placeholder="e.g., 800" />
+
+    <button>Edit</button>
+  </div>
+
+  <script>
+    function showEditForm() {
+      document.getElementById('editForm').style.display = 'block';
+    }
+
+    const timeSelect = document.getElementById("time");
+    for (let h = 0; h < 24; h++) {
+      const ampm = h < 12 ? 'AM' : 'PM';
+      const hour = h % 12 === 0 ? 12 : h % 12;
+      timeSelect.innerHTML += `<option>${hour}:00 ${ampm}</option>`;
+      timeSelect.innerHTML += `<option>${hour}:30 ${ampm}</option>`;
+    }
+
+    const isProfileComplete = <%= isProfileComplete ? 'true' : 'false' %>;
+    if (!isProfileComplete) {
+      document.querySelectorAll('.dashboard-option').forEach(card => {
+        card.classList.add('disabled');
+      });
+    }
+  </script>
+
+</body>
+</html>

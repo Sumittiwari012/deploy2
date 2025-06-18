@@ -5,6 +5,7 @@ const session = require('express-session');
 const professional = require('../models/professional');
 const booking=require('../models/booking');
 const personal = require("../models/personal");
+const date_prof = require('../models/date_prof');
 router.get('/therapy', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
   try {
@@ -14,46 +15,73 @@ router.get('/therapy', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
 router.post('/api/filter-therapists', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
 
   try {
     const { date, specialization, language, mode } = req.body;
-
     const query = {};
-    
 
-    // 🗓️ Filter by weekday (from date)
+    let weekdayKey = null;
     if (date && date !== 'ALL') {
-      const weekday = new Date(date).toLocaleDateString("en-US", {
+      weekdayKey = new Date(date).toLocaleDateString("en-US", {
         weekday: "short"
-      }); // "Mon", "Tue", etc.
-      query.available = { $in: [weekday] };
+      }).toLowerCase().slice(0, 3); // e.g., "mon", "tue"
     }
 
-    // 🎯 Specialization (case-insensitive exact match unless ALL)
+    // 🔁 Fix for mismatch between JS weekday and DB field name
+    const weekdayMap = {
+      mon: "mon",
+      tue: "tue",
+      wed: "wed",
+      thu: "thur", // JS "thu" → DB "thur"
+      fri: "fri",
+      sat: "sat",
+      sun: "sun"
+    };
+
+    const actualKey = weekdayMap[weekdayKey];
+
     if (specialization?.trim().toUpperCase() !== 'ALL') {
       query.specialization = { $regex: new RegExp(`^${specialization.trim()}$`, 'i') };
     }
 
-    // 🗣️ Language (case-insensitive inside array unless ALL)
     if (language?.trim().toUpperCase() !== 'ALL') {
       query.lang = { $elemMatch: { $regex: new RegExp(`^${language.trim()}$`, 'i') } };
     }
 
-    // 💻 Mode (case-insensitive inside array unless ALL)
     if (mode?.trim().toUpperCase() !== 'ALL') {
       query.mode = { $elemMatch: { $regex: new RegExp(`^${mode.trim()}$`, 'i') } };
     }
 
-    const matchedTherapists = await professional.find(query).lean();
-    
-    res.json({ success: true, matchedTherapists });
+    const therapists = await professional.find(query).lean();
+    const therapistUsernames = therapists.map(t => t.username);
+
+    // Get available time slots from Date_Prof for matched therapists
+    const timeData = await date_prof.find({
+      username: { $in: therapistUsernames }
+    }).lean();
+
+    const timeMap = {};
+    for (const doc of timeData) {
+      timeMap[doc.username] = actualKey ? (doc[actualKey] || []) : [];
+    }
+
+    const enrichedTherapists = therapists.map(t => ({
+      ...t,
+      available: weekdayKey ? [weekdayKey] : [],
+      timeSlots: timeMap[t.username] || []
+    }));
+
+    res.json({ success: true, matchedTherapists: enrichedTherapists });
+
   } catch (error) {
     console.error("❌ Error in /api/filter-therapists:", error);
     res.status(500).send("Server Error");
   }
 });
+
 
 router.post("/api/book-session", async (req, res) => {
   try {

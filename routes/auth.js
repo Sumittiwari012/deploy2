@@ -9,13 +9,14 @@ const AccountInfo = require('../models/accountinfo');
 const ContactInfo = require('../models/contactinfo');
 const PersonalInfo = require('../models/personal');
 const HealthPreference = require('../models/healthpref');
+const professional = require('../models/professional');
 
 const transporter = nodemailer.createTransport({
     secure: true,
     host: "smtp.gmail.com",
     port: 465,
     auth: {
-        user: "bookstore178@gmail.com",
+        user: "sumittiwari0258@gmail.com",
         pass: process.env.pass_key
     }
 });
@@ -55,14 +56,14 @@ passport.use(new GoogleStrategy({
     const email = profile.emails[0].value;
     const username = email.split('@')[0];
     const state = req.query.state; // 'login' or 'signup'
-
+    const existingProf = await professional.findOne({ email });
     const existingUser = await AccountInfo.findOne({ email });
 
     if (state === 'login') {
       if (!existingUser) {
         return done(null, false, { message: "Email not found. Please sign up first." });
       }
-      return done(null, existingUser);
+      return done(null, existingUser,state);
     }
 
     if (state === 'signup') {
@@ -95,10 +96,31 @@ passport.use(new GoogleStrategy({
         zip: '',
         emergencyContact: { name: '', relation: '', phone: '' }
       });
-
-      return done(null, newUser);
+      
+      return done(null, newUser,state);
+    }
+    if (state === 'login-prof') {
+      console.log(existingProf);
+      if (!existingProf) {
+        return done(null, false, { message: "Email not found. Please sign up first." });
+      }
+      return done(null, existingProf,state);
     }
 
+    if (state === 'signup-prof') {
+      if (existingProf) {
+        return done(null, false, { message: "Email already registered. Please log in." });
+      }
+
+      // Create new user
+      const newUser = await professional.create({
+        email,
+        username,
+        password: '',
+      });
+      
+      return done(null, newUser, state);
+    }
     return done(null, false, { message: "Invalid request." });
 
   } catch (err) {
@@ -116,12 +138,22 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
+  console.log("id value")
+  console.log(id);
+  
   try {
     const user = await AccountInfo.findById(id);
-    if (!user) {
+    const prof = await professional.findById(id);
+    if (!user && !prof) {
       return done(new Error('User not found during deserialization'), null);
     }
-    done(null, user);
+    if (user && !prof) {
+      done(null, user);
+    }
+    if (!user && prof) {
+      done(null, prof);
+    }
+    
   } catch (err) {
     done(err, null);
   }
@@ -132,6 +164,9 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get('/auth/google/callback', (req, res, next) => {
   passport.authenticate('google', async (err, user, info) => {
+      console.log(err);
+      console.log(user);
+      console.log(info);
     if (err || !user) {
       return res.send(`
         <script>
@@ -143,6 +178,7 @@ router.get('/auth/google/callback', (req, res, next) => {
 
     req.logIn(user, (err) => {
       if (err) {
+        
         console.error('Session error:', err);
         return res.redirect('/');
       }
@@ -152,8 +188,11 @@ router.get('/auth/google/callback', (req, res, next) => {
         email: user.email,
         username: user.username
       };
-
-      res.redirect('/userpage');
+      if (info === "login" || info === "signup") {
+        return res.redirect('/userpage');
+      } else if (info === "login-prof" || info === "signup-prof") {
+        return res.redirect('/p_dashboard');
+      }
     });
   })(req, res, next);
 });
@@ -172,6 +211,22 @@ router.get('/auth/google/signup', (req, res, next) => {
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     state: 'signup'
+  })(req, res, next);
+});
+
+router.get('/auth/google/login_prof', (req, res, next) => {
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: 'login-prof' // pass custom context
+  })(req, res, next);
+});
+
+// professional signup
+router.get('/auth/google/signup_prof', (req, res, next) => {
+  console.log("in the sign_prof sec");
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: 'signup-prof'
   })(req, res, next);
 });
 router.get('/change', (req, res) => {
@@ -429,7 +484,6 @@ router.post('/signup', async (req, res) => {
     });
 
     req.session.user = {
-      fullName: personal.fullName,
       username: account.username
     };
 
@@ -449,5 +503,5 @@ router.post('/logout', (req, res) => {
     res.redirect('/');
   });
 });
-
+// from here the 
 module.exports = router;

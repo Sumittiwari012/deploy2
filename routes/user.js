@@ -32,7 +32,7 @@ router.get('/edit', async (req, res) => {
       healthPreferences: health?.conditionDetails ? health.conditionDetails.split(', ') : [],
       preferredSupport: health?.therapyType || []
     };
-    //console.log(user);
+    //console.log(user);hey
     res.render('edit', { user });
   } catch (error) {
     console.error(error);

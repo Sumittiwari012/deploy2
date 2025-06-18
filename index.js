@@ -33,11 +33,16 @@ const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const serviceRoutes = require('./routes/service');
+const profRoutes = require('./routes/prof');
+const adminRoutes = require('./routes/admin');
+
 
 app.use('/', indexRoutes);
 app.use('/', authRoutes);
 app.use('/', userRoutes);
 app.use('/', serviceRoutes);
+app.use('/', profRoutes);
+app.use('/', adminRoutes);
 
 // ===== Start Server =====
 app.listen(PORT, () => {

@@ -9,11 +9,13 @@ const professionalSchema = new mongoose.Schema({
   lang: [String],           // ✅ change to array
   treat_app: [String],      // ✅ change to array
   mode: [String],           // ✅ change to array
-  price: Number,            
-  available: [String],      // ✅ change to array
+  price: Number,                  // ✅ change to array
   specialization: String,
-  latitude: Number,
-  longitude: Number            
+  pno: Number,
+  email: String,
+  password: String,
+  approve:Boolean,
+  address: String
 });
 
 module.exports = mongoose.model('Professional', professionalSchema);

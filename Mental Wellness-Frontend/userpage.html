@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="bg_img3.png" type="image/png" />
+  <style>
+    :root {
+      --primary-bg: #022531;
+      --secondary-bg: #042f3c;
+      --accent: #5b846e;
+      --text-main: #bfc8c2;
+      --text-subtle: #d0dada;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-hover: rgba(255,255,255,0.06);
+      --border-color: rgba(255,255,255,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--primary-bg) 0%, #033a4a 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(91, 132, 110, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(4, 47, 60, 0.3) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundShift 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundShift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-10px, -10px) scale(1.05); }
+    }
+
+    .navbar {
+      background: rgba(4, 47, 60, 0.95);
+      backdrop-filter: blur(20px);
+      height: 70px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .navbar h1 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      background: linear-gradient(45deg, var(--text-main), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--accent), #7a9a8a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .user-avatar:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(91, 132, 110, 0.4);
+    }
+
+    .logout-btn {
+      background: linear-gradient(45deg, var(--accent), #7a9a8a);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logout-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .logout-btn:hover::before {
+      left: 100%;
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(91, 132, 110, 0.3);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--text-main), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .username {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(91, 132, 110, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .stat-card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      background: var(--card-hover);
+      border-color: var(--accent);
+      box-shadow: 0 15px 35px rgba(91, 132, 110, 0.2);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-subtle);
+      font-weight: 500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #7a9a8a);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: var(--card-hover);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(91, 132, 110, 0.15);
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(45deg, var(--accent), #7a9a8a);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .card p {
+      color: var(--text-subtle);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      padding: 10px 0;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card-btn::after {
+      content: '→';
+      transition: transform 0.3s ease;
+    }
+
+    .card-btn:hover::after {
+      transform: translateX(5px);
+    }
+
+    .card-btn:hover {
+      color: #7a9a8a;
+    }
+
+    .upcoming {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
+    }
+
+    .upcoming.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .upcoming::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(91, 132, 110, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .upcoming h3 {
+      margin-bottom: 25px;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text-main);
+      position: relative;
+    }
+
+    .session {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .session.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .session::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(91, 132, 110, 0.05), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .session:hover::before {
+      transform: translateX(100%);
+    }
+
+    .session:hover {
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-4px) translateX(5px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 25px rgba(91, 132, 110, 0.1);
+    }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .session-title {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .session:hover .session-title {
+      color: var(--accent);
+    }
+
+    .session-status {
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session:hover .session-status::before {
+      left: 100%;
+    }
+
+    .session:hover .session-status {
+      background: #7a9a8a;
+      transform: scale(1.05);
+    }
+
+    .session-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .session-detail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-subtle);
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      padding: 4px 0;
+    }
+
+    .session:hover .session-detail {
+      color: var(--text-main);
+      transform: translateX(5px);
+    }
+
+    .session-detail strong {
+      color: var(--text-main);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .session:hover .session-detail strong {
+      color: var(--accent);
+    }
+
+    /* Session entrance animations */
+    .session:nth-child(1) { transition-delay: 0.1s; }
+    .session:nth-child(2) { transition-delay: 0.2s; }
+    .session:nth-child(3) { transition-delay: 0.3s; }
+    .session:nth-child(4) { transition-delay: 0.4s; }
+
+  
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0 20px;
+      }
+      
+      .container {
+        padding: 20px 15px;
+      }
+      
+      .header-section h2 {
+        font-size: 2rem;
+      }
+      
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .session-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Loading animation */
+    .loading {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Stagger animation for cards */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Mental Health Dashboard</h1>
+    <div class="user-menu">
+      <div class="user-avatar">JD</div>
+      <button class="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header-section">
+      <h2>Welcome back, John Doe</h2>
+      <p class="username">@johndoe</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card loading">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Sessions Completed</div>
+      </div>
+      <div class="stat-card loading">
+        <div class="stat-number">85%</div>
+        <div class="stat-label">Wellness Score</div>
+      </div>
+      <div class="stat-card loading">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Active Goals</div>
+      </div>
+      <div class="stat-card loading">
+        <div class="stat-number">28</div>
+        <div class="stat-label">Days Streak</div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card loading">
+        <div class="card-icon">👨‍⚕️</div>
+        <h3>Therapy Services</h3>
+        <p>Connect with certified therapists and schedule personalized sessions that fit your schedule and preferences.</p>
+        <a href="#" class="card-btn">Browse Professionals</a>
+      </div>
+
+      <div class="card loading">
+        <div class="card-icon">🧘‍♀️</div>
+        <h3>Self-Care Tools</h3>
+        <p>Access guided meditations, breathing exercises, and personalized wellness routines designed for your needs.</p>
+        <a href="#" class="card-btn">Explore Resources</a>
+      </div>
+
+      <div class="card loading">
+        <div class="card-icon">👥</div>
+        <h3>Community Forum</h3>
+        <p>Join safe, anonymous discussions with others on similar journeys. Share experiences and find support.</p>
+        <a href="#" class="card-btn">Join Community</a>
+      </div>
+    </div>
+
+    <div class="upcoming">
+      <h3>Upcoming Sessions</h3>
+
+      <div class="session">
+        <div class="session-header">
+          <div class="session-title">Dr. Emily Smith</div>
+          <div class="session-status">Online</div>
+        </div>
+        <div class="session-details">
+          <div class="session-detail">
+            <strong>Date:</strong> June 25, 2025
+          </div>
+          <div class="session-detail">
+            <strong>Time:</strong> 3:00 PM
+          </div>
+          <div class="session-detail">
+            <strong>Duration:</strong> 50 minutes
+          </div>
+          <div class="session-detail">
+            <strong>Focus:</strong> Anxiety Management
+          </div>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="session-header">
+          <div class="session-title">Dr. Alex Johnson</div>
+          <div class="session-status">In-Person</div>
+        </div>
+        <div class="session-details">
+          <div class="session-detail">
+            <strong>Date:</strong> July 1, 2025
+          </div>
+          <div class="session-detail">
+            <strong>Time:</strong> 11:00 AM
+          </div>
+          <div class="session-detail">
+            <strong>Duration:</strong> 60 minutes
+          </div>
+          <div class="session-detail">
+            <strong>Focus:</strong> Cognitive Therapy
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loadingElements = document.querySelectorAll('.loading');
+      loadingElements.forEach((el, index) => {
+        setTimeout(() => {
+          el.style.animation = 'fadeIn 0.5s ease-out forwards';
+        }, index * 100);
+      });
+    });
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+  
+    document.querySelectorAll('.session').forEach(session => {
+      session.addEventListener('click', function() {
+        this.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          this.style.transform = 'translateY(-4px) translateX(5px)';
+        }, 150);
+      });
+    });
+
+
+    document.querySelector('.logout-btn').addEventListener('click', function() {
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = 'scale(1)';
+      }, 150);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            if (entry.target.classList.contains('upcoming')) {
+              const sessions = entry.target.querySelectorAll('.session');
+              sessions.forEach((session, index) => {
+                setTimeout(() => {
+                  session.classList.add('visible');
+                }, index * 200);
+              });
+            }
+          }
+        });
+      }, { threshold: 0.3 });
+
+      const upcomingSection = document.querySelector('.upcoming');
+      if (upcomingSection) {
+        observer.observe(upcomingSection);
+      }
+    });
+
+    
+    document.querySelectorAll('.session').forEach(session => {
+      session.addEventListener('mouseenter', function() {
+
+        const status = this.querySelector('.session-status');
+        if (status) {
+          status.style.animation = 'pulse 0.6s ease-in-out';
+        }
+      });
+      
+      session.addEventListener('mouseleave', function() {
+        const status = this.querySelector('.session-status');
+        if (status) {
+          status.style.animation = 'none';
+        }
+      });
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      
+      @keyframes slideInFromLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

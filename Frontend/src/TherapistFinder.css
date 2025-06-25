@@ -1,0 +1,460 @@
+:root {
+  --primary-bg: #022531;
+  --secondary-bg: #042f3c;
+  --accent: #5b846e;
+  --text-main: #bfc8c2;
+  --text-subtle: #d0dada;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --border-color: rgba(255,255,255,0.1);
+}
+
+.finder-wrapper {
+  padding: 60px 30px;
+  background: linear-gradient(135deg, var(--primary-bg), #033a4a);
+  min-height: 100vh;
+  color: var(--text-main);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--text-main), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+}
+
+
+.finder-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 30px;
+  overflow-x: auto; 
+  overflow: visible;
+}
+
+
+.sidebar {
+  position: sticky;
+  top: 100px;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-shrink: 0;
+  top: 100px;
+  margin-bottom: 0;
+}
+
+.sidebar label {
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  color: var(--text-subtle, #d0dada);
+}
+
+.sidebar select,
+.sidebar input,
+.sidebar button {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-main, #bfc8c2);
+  transition: all 0.3s ease;
+}
+
+.sidebar select:focus,
+.sidebar input:focus {
+  outline: none;
+  border-color: var(--accent, #5b846e);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+
+
+
+.sidebar h4 {
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+
+
+
+.sidebar button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background: rgba(91, 132, 110, 0.1);
+  color: #7a9a8a;
+  border-color: #7a9a8a;
+}
+
+.results {
+  flex: 3;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+
+.profile-card {
+  background: var(--card-bg, rgba(255,255,255,0.03));
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(91, 132, 110, 0.4);
+}
+
+
+.card-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+
+.card-body {
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+
+.card-body p {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.availability {
+  font-style: italic;
+  color: var(--text-subtle);
+}
+
+.card-body .btn {
+  padding: 10px 20px;
+  background-color: var(--accent);
+  color: #d0dada;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.card-body .btn:hover {
+  background-color: #7a9a8a;
+  color: white;
+}
+
+/* Dark theme for react-select */
+.custom-select .react-select__control {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  min-height: 45px;
+  box-shadow: none;
+}
+
+.custom-select .react-select__control--is-focused {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.custom-select .react-select__single-value {
+  color: var(--text-main);
+}
+
+.custom-select .react-select__menu {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  z-index: 9999;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+.custom-select .react-select__option {
+  background-color: transparent;
+  color: var(--text-main);
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.custom-select .react-select__option--is-focused {
+  background-color: rgba(91, 132, 110, 0.2);
+  color: var(--accent);
+}
+
+.custom-select .react-select__option--is-selected {
+  background-color: #72a18a;
+  color:#bfc8c2;
+}
+
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+/* Apply fade/slide animation to wrapper */
+.finder-wrapper {
+  animation: fadeIn 0.6s ease-in-out both;
+}
+
+/* Sidebar slide-in */
+.sidebar {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+}
+
+/* Cards animation */
+.profile-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+/* Staggered delay for each card */
+.profile-card:nth-child(1) { animation-delay: 0.4s; }
+.profile-card:nth-child(2) { animation-delay: 0.6s; }
+.profile-card:nth-child(3) { animation-delay: 0.8s; }
+.profile-card:nth-child(4) { animation-delay: 1s; }
+
+
+.profile-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(91, 132, 110, 0.3);
+  border-color: var(--accent, #5b846e);
+}
+/* Default: show desktop, hide mobile */
+.mobile-only {
+  display: none;
+}
+.desktop-only {
+  display: block;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  .finder-wrapper {
+    padding: 30px 15px;
+  }
+
+  .finder-container {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 250px;
+    position: static;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+    padding: 15px;
+    gap: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .sidebar h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .sidebar label {
+    font-size: 0.75rem;
+  }
+
+  .sidebar select,
+  .sidebar input,
+  .sidebar button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  .sidebar button {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .results {
+    width: 100%;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .profile-card {
+    width: 100%;
+    padding: 14px 16px;
+    min-height: 200px;
+  }
+
+  .card-body p {
+    font-size: 0.85rem;
+  }
+
+  .card-body .btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  /* Show/hide top row */
+  .mobile-only {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .filter-top-row input,
+  .filter-top-row button {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-main);
+  }
+
+  .filter-top-row button {
+    background: var(--accent);
+    color: #d0dada;
+    border: none;
+    font-weight: 600;
+  }
+}
+/* ADD THIS: Animation class for smooth slide-down effect */
+.mobile-filters-animated {
+  animation: slideDown 0.3s ease-out both;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hide extra filters by default in mobile */
+@media screen and (max-width: 768px) {
+  .mobile-extra-filters {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-extra-filters.show {
+    display: flex;
+  }
+}
+/* Add spacing between filter blocks in desktop */
+.sidebar > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+@media screen and (min-width: 769px) {
+  .sidebar .custom-select:nth-of-type(1),
+  .sidebar .custom-select:nth-of-type(2),
+  .sidebar .custom-select:nth-of-type(3) {
+    margin-bottom: 18px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .filter-top-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .filter-top-row input,
+  .filter-top-row button {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+  }
+
+  .filter-top-row button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-weight: 600;
+  }
+
+  /* Ensure parent container doesn’t restrict width */
+  .sidebar {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+}
